@@ -41,3 +41,12 @@ security:
 unclassified:
   location:
     url: http://10.5.0.2:8080/
+  globalLibraries:
+    libraries:
+      - name: "jenkins-shared-library"
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "https://github.com/carlosrn98/jenkins-shared-library.git"
+                credentialsId: 'personal-github-pk'
