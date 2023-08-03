@@ -1,0 +1,47 @@
+services:
+  jenkins:
+    container_name: jenkins-master
+    build:
+      context: .
+      dockerfile: jenkins-master/Dockerfile
+      tags:
+        - "jenkins-master:v1.0"
+    environment:
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false
+      CASC_JENKINS_CONFIG: /var/jenkins_conf
+      JENKINS_ADMIN_ID: admin
+      JENKINS_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+    networks:
+      jenkins-network:
+        ipv4_address: 10.5.0.2
+
+  ssh-agent:
+    container_name: jenkins-ssh-agent
+    restart: always
+    command: -url http://10.5.0.2:8080 ${DEV_JENKINS_SLAVE1} slave1
+    build:
+      context: .
+      dockerfile: jenkins-slave/Dockerfile
+      tags:
+        - "jenkins-slave:v1.0"
+    networks:
+      jenkins-network:
+        ipv4_address: 10.5.0.3
+
+networks:
+  jenkins-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
+
+volumes:
+  jenkins_home:   

@@ -1,0 +1,28 @@
+jobs:
+  # - url: https://github.com/carlosrn98/jenkins_project/blob/jcasc/test-job/job.groovy
+  - script: >
+      pipelineJob("TestJob") {
+        description("This is a test job.")
+        definition {
+            cpsScm {
+                scm {
+                    git {
+                        branch("*/jcasc")
+                        remote {
+                            url("https://github.com/carlosrn98/jenkins-project.git")
+                            credentials("personal-github-pk")
+                        }
+                    }
+                }
+                scriptPath("test-job/script.groovy")
+            }
+        }
+
+        triggers {
+            githubPush()
+        }
+
+        logRotator {
+            numToKeep(5)
+        }
+      }

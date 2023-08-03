@@ -1,0 +1,43 @@
+jenkins:
+  systemMessage: "This is carlosrn98's Jenkins! DevOps is awesome!."
+  numExecutors: 0
+  quietPeriod: 5
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+  authorizationStrategy: loggedInUsersCanDoAnything
+  crumbIssuer: "standard"
+
+  nodes:
+    - permanent:
+        name: "slave1"
+        labelString: "slave1"
+        nodeName: "slave1"
+        numExecutors: 4
+        mode: NORMAL
+        remoteFS: "/home/jenkins/agent/"
+        launcher:
+          inbound:
+            webSocket: true
+            workDirSettings:
+              disabled: false
+              internalDir: "remoting"
+              workDirPath: ""
+              failIfWorkDirIsMissing: false
+
+tool:
+  git:
+    installations:
+      - name: Default
+        home: "git"
+
+security:
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: false
+
+unclassified:
+  location:
+    url: http://10.5.0.2:8080/
