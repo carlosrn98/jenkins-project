@@ -1,16 +1,4 @@
-// pipeline {
-//     agent {
-//         label "slave1"
-//     }
-//     stages {
-//         stage("Test that it is working") {
-//             steps {
-//                 sh "echo 'The pipeline works!'"
-//             }
-//         }
-//     }
-// }
-library 'jenkins-shared-library@pipelines'
+library 'jenkins-shared-library@master'
 
 testPipeline {
     agent = 'slave1'
